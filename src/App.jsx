@@ -19,20 +19,10 @@ const staggerContainer = {
 };
 
 function App() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <div className="app">
       {/* Navbar */}
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <nav className="navbar">
         <div className="container nav-container">
           <div className="logo">
             <img src="/estate-removebg-preview.png" alt="Sampras Realty Group Logo" onError={(e) => {

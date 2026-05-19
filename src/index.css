@@ -125,23 +125,9 @@ ul {
   left: 0;
   width: 100%;
   z-index: 1000;
-  transition: all 0.4s ease;
-  padding: 1.5rem 0;
-}
-
-.navbar.scrolled {
-  background-color: rgba(253, 253, 252, 0.95);
-  backdrop-filter: blur(10px);
+  background-color: #ffffff;
   padding: 0.8rem 0;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-.navbar.scrolled .nav-link {
-  color: var(--primary-green);
-}
-
-.navbar.scrolled .nav-link:hover {
-  color: var(--accent-gold);
 }
 
 .nav-container {
@@ -151,12 +137,8 @@ ul {
 }
 
 .logo img {
-  height: 60px;
-  transition: all 0.4s ease;
-}
-
-.navbar.scrolled .logo img {
   height: 50px;
+  display: block;
 }
 
 .nav-links {
@@ -166,7 +148,7 @@ ul {
 }
 
 .nav-link {
-  color: var(--text-light);
+  color: var(--primary-green);
   font-weight: 500;
   font-size: 1rem;
   text-transform: uppercase;
