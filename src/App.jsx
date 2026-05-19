@@ -46,10 +46,10 @@ function App() {
             <li><a href="#services" className="nav-link">Services</a></li>
             <li><a href="#contact" className="nav-link">Contact</a></li>
           </ul>
-          <div className="nav-contact">
+          <a href="tel:+17323977880" className="nav-contact">
             <Phone size={20} />
-            <span>+1 (832) 000-0000</span>
-          </div>
+            <span>+1 (732) 397-7880</span>
+          </a>
         </div>
       </nav>
 
@@ -344,10 +344,10 @@ function App() {
               <div className="contact-details">
                 <p>1234 Luxury Estate Blvd, Suite 100<br/>Houston, Texas 77002</p>
                 
-                <div className="contact-detail-item" style={{ marginTop: '1.5rem' }}>
+                <a href="tel:+17323977880" className="contact-detail-item" style={{ marginTop: '1.5rem', textDecoration: 'none' }}>
                   <Phone size={20} className="contact-detail-icon" />
-                  <span>+1 (832) 000-0000</span>
-                </div>
+                  <span>+1 (732) 397-7880</span>
+                </a>
                 <div className="contact-detail-item">
                   <Mail size={20} className="contact-detail-icon" />
                   <span style={{ color: 'var(--accent-gold)' }}>info@samprasrealtygroup.com</span>
@@ -393,7 +393,11 @@ function App() {
               <ul className="contact-info">
                 <li><MapPin size={18} className="contact-icon" /> Houston, Texas</li>
                 <li><Mail size={18} className="contact-icon" /> info@samprasrealtygroup.com</li>
-                <li><Phone size={18} className="contact-icon" /> +1 (832) 000-0000</li>
+                <li>
+                  <a href="tel:+17323977880" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <Phone size={18} className="contact-icon" /> +1 (732) 397-7880
+                  </a>
+                </li>
                 <li><Home size={18} className="contact-icon" /> www.samprasrealtygroup.com</li>
               </ul>
             </div>
