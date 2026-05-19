@@ -63,7 +63,6 @@ function App() {
           animate="visible"
           variants={staggerContainer}
         >
-          <motion.h2 variants={fadeIn} className="hero-subtitle">Houston’s Trusted Real Estate Group</motion.h2>
           <motion.h1 variants={fadeIn} className="hero-title">Luxury Real Estate.<br/>Exceptional Results.</motion.h1>
           <motion.p variants={fadeIn} className="hero-desc">
             At Sampras Realty Group, we specialize in helping buyers, sellers, and investors navigate Houston’s competitive real estate market with confidence, strategy, and personalized service. Whether you are searching for your dream home, selling a luxury property, or expanding your real estate portfolio, our team delivers a premium experience tailored to your goals.
