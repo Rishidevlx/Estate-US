@@ -381,7 +381,7 @@ function App() {
               <h4 className="footer-title">Contact Us</h4>
               <ul className="contact-info">
                 <li><MapPin size={18} className="contact-icon" /> Houston, Texas</li>
-                <li><Mail size={18} className="contact-icon" /> enquiry@samprasrealty.com</li>
+                <li><Mail size={18} className="contact-icon" />enquiry@samprasrealty.com</li>
                 <li>
                   <a href="tel:+17323977880" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <Phone size={18} className="contact-icon" /> +1 (732) 397-7880
