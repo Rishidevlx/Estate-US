@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     // Setup email data
     const mailOptions = {
       from: `"${name}" <${email}>`, // sender address
-      to: 'rishiaravindhaoff@gmail.com', // list of receivers
+      to: 'homes@samprasrealty.com', // list of receivers
       subject: `New Contact Form Submission: ${subject || 'No Subject'}`,
       text: `
         Name: ${name}
