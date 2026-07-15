@@ -19,6 +19,46 @@ const staggerContainer = {
 };
 
 function App() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="app">
       {/* Navbar */}
@@ -36,9 +76,9 @@ function App() {
             <li><a href="#services" className="nav-link">Services</a></li>
             <li><a href="#contact" className="nav-link">Contact</a></li>
           </ul>
-          <a href="tel:+17323977880" className="nav-contact">
+          <a href="tel:+19796002124" className="nav-contact">
             <Phone size={20} />
-            <span>+1 (732) 397-7880</span>
+            <span>+1 979 600 2124</span>
           </a>
         </div>
       </nav>
@@ -290,37 +330,42 @@ function App() {
           </motion.div>
           
           <div className="contact-container">
-            <motion.div 
+            <motion.form 
               className="contact-form"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              onSubmit={handleSubmit}
             >
               <div className="form-row">
                 <div className="form-group">
                   <label>Your Name <span>*</span></label>
-                  <input type="text" className="form-input" />
+                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} required className="form-input" />
                 </div>
                 <div className="form-group">
                   <label>Email <span>*</span></label>
-                  <input type="email" className="form-input" />
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required className="form-input" />
                 </div>
               </div>
               <div className="form-group">
-                <label>Phone <span>*</span></label>
-                <input type="tel" className="form-input" />
+                <label>Phone</label>
+                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="form-input" />
               </div>
               <div className="form-group">
-                <label>Subject <span>*</span></label>
-                <input type="text" className="form-input" />
+                <label>Subject</label>
+                <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} className="form-input" />
               </div>
               <div className="form-group">
                 <label>Message <span>*</span></label>
-                <textarea className="form-textarea"></textarea>
+                <textarea name="message" value={formData.message} onChange={handleInputChange} required className="form-textarea"></textarea>
               </div>
-              <button className="btn btn-primary" style={{ alignSelf: 'flex-start', marginTop: '0.5rem' }}>Send Message</button>
-            </motion.div>
+              {submitStatus === 'success' && <p style={{ color: 'green', fontSize: '0.9rem' }}>Message sent successfully!</p>}
+              {submitStatus === 'error' && <p style={{ color: 'red', fontSize: '0.9rem' }}>Failed to send message. Please try again.</p>}
+              <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ alignSelf: 'flex-start', marginTop: '0.5rem', opacity: isSubmitting ? 0.7 : 1 }}>
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </motion.form>
             
             <motion.div 
               className="contact-info-block"
@@ -333,13 +378,13 @@ function App() {
               <div className="contact-details">
                 <p>1234 Luxury Estate Blvd, Suite 100<br/>Houston, Texas 77002</p>
                 
-                <a href="tel:+17323977880" className="contact-detail-item" style={{ marginTop: '1.5rem', textDecoration: 'none' }}>
+                <a href="tel:+19796002124" className="contact-detail-item" style={{ marginTop: '1.5rem', textDecoration: 'none' }}>
                   <Phone size={20} className="contact-detail-icon" />
-                  <span>+1 (732) 397-7880</span>
+                  <span>+1 979 600 2124</span>
                 </a>
                 <div className="contact-detail-item">
                   <Mail size={20} className="contact-detail-icon" />
-                  <span style={{ color: 'var(--accent-gold)' }}>info@samprasrealtygroup.com</span>
+                  <span style={{ color: 'var(--accent-gold)' }}>homes@samprasrealty.com</span>
                 </div>
               </div>
               
@@ -381,10 +426,10 @@ function App() {
               <h4 className="footer-title">Contact Us</h4>
               <ul className="contact-info">
                 <li><MapPin size={18} className="contact-icon" /> Houston, Texas</li>
-                <li><Mail size={18} className="contact-icon" />enquiry@samprasrealty.com</li>
+                <li><Mail size={18} className="contact-icon" /> homes@samprasrealty.com</li>
                 <li>
-                  <a href="tel:+17323977880" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <Phone size={18} className="contact-icon" /> +1 (732) 397-7880
+                  <a href="tel:+19796002124" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <Phone size={18} className="contact-icon" /> +1 979 600 2124
                   </a>
                 </li>
                 <li><Home size={18} className="contact-icon" /> www.samprasrealtygroup.com</li>
