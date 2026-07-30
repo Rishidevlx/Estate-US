@@ -136,8 +136,19 @@ ul {
   align-items: center;
 }
 
-.logo img {
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.sampras-logo {
   height: 50px;
+  display: block;
+}
+
+.homesmart-logo {
+  height: 40px;
   display: block;
 }
 
@@ -712,8 +723,41 @@ ul {
   .contact-container { gap: 2rem; padding: 2rem; }
 }
 
+.mobile-menu-toggle {
+  display: none;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
-  .nav-links { display: none; } /* Mobile menu would go here */
+  .logo {
+    gap: 8px;
+  }
+  .sampras-logo {
+    height: 35px;
+  }
+  .homesmart-logo {
+    height: 25px;
+  }
+  .desktop-contact { display: none; }
+  .mobile-menu-toggle { display: block; }
+  
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1.5rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .nav-links.mobile-active {
+    display: flex;
+  }
+
   .hero-title { font-size: 2.2rem; }
   .hero-desc { font-size: 1rem; padding: 0 1rem; margin-bottom: 2rem; }
   .hero-buttons { flex-direction: column; gap: 0.8rem; margin-bottom: 10px; }

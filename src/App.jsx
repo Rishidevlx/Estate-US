@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Home, Key, TrendingUp, Shield, CheckCircle2, Quote, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Home, Key, TrendingUp, Shield, CheckCircle2, Quote, ArrowRight, Menu, X } from 'lucide-react';
 import './index.css';
 
 const fadeIn = {
@@ -19,6 +19,7 @@ const staggerContainer = {
 };
 
 function App() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -65,21 +66,25 @@ function App() {
       <nav className="navbar">
         <div className="container nav-container">
           <div className="logo">
-            <img src="/estate-removebg-preview.png" alt="Sampras Realty Group Logo" onError={(e) => {
+            <img className="sampras-logo" src="/estate-removebg-preview.png" alt="Sampras Realty Group Logo" onError={(e) => {
               e.target.onerror = null; 
               e.target.src = "https://placehold.co/400x150/113c2b/d4af37?text=SAMPRAS+REAL+ESTATE";
             }} />
+            <img className="homesmart-logo" src="/homesmart-logo.png" alt="HomeSmart Logo" />
           </div>
-          <ul className="nav-links">
-            <li><a href="#home" className="nav-link">Home</a></li>
-            <li><a href="#about" className="nav-link">About</a></li>
-            <li><a href="#services" className="nav-link">Services</a></li>
-            <li><a href="#contact" className="nav-link">Contact</a></li>
+          <ul className={`nav-links ${isMobileMenuOpen ? 'mobile-active' : ''}`}>
+            <li><a href="#home" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</a></li>
+            <li><a href="#about" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</a></li>
+            <li><a href="#services" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</a></li>
+            <li><a href="#contact" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a></li>
           </ul>
-          <a href="tel:+19796002124" className="nav-contact">
+          <a href="tel:+19796002124" className="nav-contact desktop-contact">
             <Phone size={20} />
             <span>+1 979 600 2124</span>
           </a>
+          <div className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X size={28} color="var(--primary-green)" /> : <Menu size={28} color="var(--primary-green)" />}
+          </div>
         </div>
       </nav>
 
@@ -407,7 +412,10 @@ function App() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-about">
-              <img src="/estate-removebg-preview.png" alt="Sampras Realty Group" style={{ height: '50px', filter: 'brightness(0) invert(1)' }} onError={(e) => { e.target.style.display = 'none'; }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <img src="/estate-removebg-preview.png" alt="Sampras Realty Group" style={{ height: '50px' }} onError={(e) => { e.target.style.display = 'none'; }} />
+                <img src="/homesmart-logo-red-wht.png" alt="HomeSmart Logo" style={{ height: '35px' }} />
+              </div>
               <h3 style={{ color: 'var(--accent-gold)', marginTop: '1rem', fontFamily: 'Outfit' }}>Let's Talk Real Estate</h3>
               <p>We are here to answer your questions, discuss your goals, and help you take the next step in your real estate journey.</p>
             </div>
