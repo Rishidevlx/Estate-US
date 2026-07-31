@@ -29,14 +29,57 @@ function App() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Validate phone to only accept numbers and max 10 digits
+    if (name === 'phone') {
+      const onlyNums = value.replace(/[^0-9]/g, '');
+      if (onlyNums.length <= 10) {
+        setFormData(prev => ({ ...prev, [name]: onlyNums }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+
+    // Clear error for the field when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.name.trim()) errors.name = 'Name is required';
+    
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Invalid email format';
+    }
+    
+    if (!formData.phone) {
+      errors.phone = 'Phone number is required';
+    } else if (formData.phone.length !== 10) {
+      errors.phone = 'Phone number must be exactly 10 digits';
+    }
+    
+    if (!formData.message.trim()) errors.message = 'Message is required';
+    
+    return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
     
@@ -346,16 +389,19 @@ function App() {
               <div className="form-row">
                 <div className="form-group">
                   <label>Your Name <span>*</span></label>
-                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} required className="form-input" />
+                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} className={`form-input ${formErrors.name ? 'error' : ''}`} style={{ borderColor: formErrors.name ? '#d9534f' : '' }} />
+                  {formErrors.name && <span style={{ color: '#d9534f', fontSize: '0.85rem' }}>{formErrors.name}</span>}
                 </div>
                 <div className="form-group">
                   <label>Email <span>*</span></label>
-                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required className="form-input" />
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`form-input ${formErrors.email ? 'error' : ''}`} style={{ borderColor: formErrors.email ? '#d9534f' : '' }} />
+                  {formErrors.email && <span style={{ color: '#d9534f', fontSize: '0.85rem' }}>{formErrors.email}</span>}
                 </div>
               </div>
               <div className="form-group">
-                <label>Phone</label>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="form-input" />
+                <label>Phone <span>*</span></label>
+                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className={`form-input ${formErrors.phone ? 'error' : ''}`} style={{ borderColor: formErrors.phone ? '#d9534f' : '' }} />
+                {formErrors.phone && <span style={{ color: '#d9534f', fontSize: '0.85rem' }}>{formErrors.phone}</span>}
               </div>
               <div className="form-group">
                 <label>Subject</label>
@@ -363,7 +409,8 @@ function App() {
               </div>
               <div className="form-group">
                 <label>Message <span>*</span></label>
-                <textarea name="message" value={formData.message} onChange={handleInputChange} required className="form-textarea"></textarea>
+                <textarea name="message" value={formData.message} onChange={handleInputChange} className={`form-textarea ${formErrors.message ? 'error' : ''}`} style={{ borderColor: formErrors.message ? '#d9534f' : '' }}></textarea>
+                {formErrors.message && <span style={{ color: '#d9534f', fontSize: '0.85rem' }}>{formErrors.message}</span>}
               </div>
               {submitStatus === 'success' && <p style={{ color: 'green', fontSize: '0.9rem' }}>Message sent successfully!</p>}
               {submitStatus === 'error' && <p style={{ color: 'red', fontSize: '0.9rem' }}>Failed to send message. Please try again.</p>}
