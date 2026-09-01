@@ -15,21 +15,41 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Name, email, and message are required' });
     }
 
-    // Create a transporter using environment variables
+    // Fetch settings from the backend DB
+    const apiUrl = process.env.VITE_API_URL || 'http://localhost:5000';
+    const settingsRes = await fetch(`${apiUrl}/api/settings`);
+    let mailConfig = null;
+    let recipientEmail = 'homes@samprasrealty.com';
+    
+    if (settingsRes.ok) {
+      const settingsData = await settingsRes.json();
+      if (settingsData && settingsData.mailConfig) {
+        mailConfig = settingsData.mailConfig;
+        recipientEmail = mailConfig.recipientEmail || recipientEmail;
+      }
+    }
+
+    // Default to .env if not found in DB
+    const smtpHost = mailConfig?.serviceProvider === 'CustomMail' ? 'smtp.zoho.com' : 'smtp.gmail.com'; // Adjust host based on provider if needed
+    const smtpUser = mailConfig?.senderAccount || process.env.SMTP_USER;
+    const smtpPass = mailConfig?.appPassword || process.env.SMTP_PASS;
+
+    // Create a transporter using DB config or fallback
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_PORT == 465, // true for 465, false for other ports
+      host: smtpHost,
+      port: process.env.SMTP_PORT || 465,
+      secure: true, 
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: smtpUser,
+        pass: smtpPass,
       },
     });
 
     // Setup email data
     const mailOptions = {
-      from: `"${name}" <${email}>`, // sender address
-      to: 'homes@samprasrealty.com', // list of receivers
+      from: `"${name}" <${smtpUser}>`, // Must send from the authenticated email
+      replyTo: email,
+      to: recipientEmail, // list of receivers
       subject: `New Contact Form Submission: ${subject || 'No Subject'}`,
       text: `
         Name: ${name}
