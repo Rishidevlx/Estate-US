@@ -12,13 +12,23 @@ const contactRoutes = require('../routes/contactRoutes');
 const profileRoutes = require('../routes/profileRoutes');
 const dashboardRoutes = require('../routes/dashboardRoutes');
 
-// Connect to Database
-connectDB();
+// connectDB will be called in middleware for Vercel support
 
 // Middleware
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Ensure Database is connected before handling any route (Crucial for Vercel Serverless)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('DB Connection Error in Middleware:', error);
+    res.status(500).json({ message: 'Database connection failed' });
+  }
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
